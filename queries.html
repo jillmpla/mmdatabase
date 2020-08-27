@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<h1><u>SQLite Queries</h1></u>
+<h2>INSERT INTO (fake data used to fill database):</h2>
+INSERT INTO Account VALUES (1, 'Harry', 'Potter', '(345)334-0987', '5 Pine Lane', 'PA', 15001, 'flowers45', 'La1980');<br>
+INSERT INTO Account VALUES (2, 'Dolores', 'Umbridge', '(707)717-6720', '14 Mayberry Road', 'NY', 10001, 'HoopsShadoop', 'HulaHoop$$');<br>
+INSERT INTO Account VALUES (3, 'Ron', 'Weasley', '(454)332-0909', '100 Second Street', 'WA', 98001, 'branLives', 'nanana231');<br>
+INSERT INTO Payment VALUES (500, 'active', 5.99, 'visa', 3343998934542287, '05/20', 512, 1);<br>
+INSERT INTO Payment VALUES (501, 'inactive', 5.99, 'mastercard', 1123445434983376, '10/22', 333, 2);<br>
+INSERT INTO Payment VALUES (502, 'active', 5.99, 'visa', 2232998734568876, '09/25', 567, 3);<br>
+INSERT INTO Location VALUES ('Scottish Highlands', 'A mountainous region encompassing northwest Scotland.', 'Warm temperatures and heavy rain.');<br>
+INSERT INTO Location VALUES ('Essex', 'Inspiring villages, picturesque towns and rolling landscapes.', 'Warm temperatures and sunshine.');<br>
+INSERT INTO Location VALUES ('East Yorkshire', 'Filled with chalk streams, hidden valleys, miles of quiet countryside and bustling market towns.', 'Mild temperatures and sunshine.');<br>
+INSERT INTO Guild VALUES (1000, 'Knights of the Highlands', 'We do good things for good people.');<br>
+INSERT INTO Guild VALUES (1001, 'Zombie Squad', 'BRAAAAIIIIINNNNSSS!');<br>
+INSERT INTO Guild VALUES (1002, 'Rainbow Unicorns', 'We ride unicorns into the night.');<br>
+INSERT INTO Weapon VALUES (750, 'Sword of Valor', 'sword', 500);<br>
+INSERT INTO Weapon VALUES (751, 'Staff of Nethys', 'staff', 1000);<br>
+INSERT INTO Weapon VALUES (752, 'Valyrian Point', 'dagger', 500);<br>
+INSERT INTO Achievement VALUES (2000, 'Apple Dreamer', 'Steal an apple from a Essex bandit.');<br>
+INSERT INTO Achievement VALUES (2001, 'Orange Melody', 'Buy 10 oranges from the shopkeeper in East Yorkshire.');<br>
+INSERT INTO Achievement VALUES (2002, 'Cherry Sundae', 'Collect 10 cherries from the Scottish Highlands.');<br>
+INSERT INTO Quest VALUES (100, 'Amongst the Hay', 5, 'Pick up 5 pieces of hay.', 1000);<br>
+INSERT INTO Quest VALUES (101, 'Flowers for Daisy', 1, 'Collect 5 flowers for Daisy.', 2000);<br>
+INSERT INTO Quest VALUES (102, 'Lost Horse', 5, 'Find the lost horse name Max.', 1000);<br>
+INSERT INTO Character VALUES ('Hemoglobin', 'human', 'warlock', 5, 5000, 3, 'Scottish Highlands', 1002, 751, 2000, 100);<br>
+INSERT INTO Character VALUES ('BananaStar', 'zombie', 'assassin', 1, 1000, 2, 'Essex', 1001, 752, 2001, 101);<br>
+INSERT INTO Character VALUES ('Knightmare', 'reptilian', 'mercenary', 5, 5000, 1, 'Essex', 1000, 750, 2002, 102);<br>
+<hr>
+<h2>UPDATE:</h2>
+UPDATE Payment<br>
+SET Active_ornot = 'inactive'<br>
+WHERE Payment_ID = 500;<br>
+<hr>
+<h2>DROP TABLE:</h2>
+DROP TABLE Payment;<br>
+<h2>DELETE:</h2>
+DELETE<br>
+FROM Character<br>
+WHERE CharName = 'Hemoglobin';<br>
+<hr>
+<h2>SELECT/DISTINCT/GROUP BY/ORDER BY:</h2>
+SELECT DISTINCT Phone<br>
+FROM Account<br>
+WHERE State = 'NY' OR State = 'PA' OR State = 'WA'<br>
+GROUP BY State<br>
+ORDER BY Phone DESC;<br>
+<hr>
+<h2>ALTER:</h2>
+ALTER TABLE Account<br>
+RENAME TO Accounts;<br>
+<hr>
+<h2>AND/OR/BETWEEN/LIKE:</h2>
+SELECT * <br>
+FROM Payment <br>
+WHERE Active_ornot = 'active' AND Payment_ID BETWEEN 500 AND 600;<br>
+<br>
+<br>
+SELECT * <br>
+FROM Payment<br>
+WHERE Type = 'visa' OR Type = 'mastercard' OR Payment_ID LIKE '5%';<br>
+<hr>
+<h2>IN:</h2>
+SELECT *<br>
+FROM Account<br>
+WHERE State IN ('NY', 'WA');<br>
+<hr>
+<h2>HAVING/COUNT:</h2>
+SELECT Class, Level, COUNT(Level)<br>
+FROM Character<br>
+GROUP BY Class<br>
+HAVING Level > 1<br>
+ORDER BY Level;<br>
+<hr>
+<h2>CREATE INDEX:</h2>
+CREATE INDEX Character_Names<br>
+ON Character (CharName);<br>
+<hr>
+<h2>SUM:</h2>
+SELECT Active_ornot, Recur_month_payment, SUM(Recur_month_payment) AS Total_Profit_or_Loss<br>
+FROM Payment<br>
+GROUP BY Active_ornot;<br>
+<hr>
+<h2>CROSS JOIN:</h2>
+SELECT Fname, Lname, Phone, Username, CC_no<br>
+FROM Account<br>
+CROSS JOIN Payment;<br>
+<hr>
+<h2>INNER JOIN:</h2>
+SELECT Fname, Lname, Phone, Username, CC_no<br>
+FROM Account<br>
+INNER JOIN Payment<br>
+ON Account.Account_ID = Payment.Account_ID;<br>
+<hr>
+<h2>LEFT OUTER JOIN:</h2>
+SELECT Fname, Lname, Phone, Username, CC_no<br>
+FROM Account<br>
+LEFT OUTER JOIN Payment<br>
+ON Account.Account_ID = Payment.Account_ID;<br>
+<hr>
+<h2>VIEWS:</h2>
+CREATE VIEW Location_Names AS<br>
+SELECT LocName<br>
+FROM Location;<br>
+<br>
+<br>
+CREATE VIEW Weapon_Names AS<br>
+SELECT Weapon_name<br>
+FROM Weapon;<br>
+<hr>
+<h2>UNION:</h2>
+SELECT CharName, Race, Class, Weapon_name<br>
+FROM Character<br>
+INNER JOIN Weapon<br>
+ON Character.Weapon_ID = Weapon.Weapon_ID<br>
+<br><br>   
+UNION<br>
+<br><br>
+SELECT CharName, Race, Class, Weapon_name<br>
+FROM Character<br>
+LEFT OUTER JOIN Weapon<br>
+ON Character.Weapon_ID = Weapon.Weapon_ID;<br>
+<hr>
+<h2>SUBQUERIES:</h2>
+SELECT *<br>
+FROM Account<br>
+WHERE Username IN (SELECT Username<br>
+FROM Account<br>
+WHERE State = 'NY');<br>
+</body>
+</html>

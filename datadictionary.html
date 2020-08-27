@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<h1><u>Data Dictionary</h1></u>
+
+<h2>Query:</h2>
+SELECT SQL<br>
+FROM SQLITE_MASTER;<br>
+<br>
+<h2>All Table/Index/View Data:</h2><pre>
+CREATE TABLE Account (
+Account_ID INTEGER NOT NULL PRIMARY KEY,
+Fname VARCHAR(30) NOT NULL,
+Lname VARCHAR(30) NOT NULL,
+Phone VARCHAR(15) NOT NULL,
+Address VARCHAR(50) NOT NULL,
+State VARCHAR(2) NOT NULL,
+Zip INTEGER NOT NULL,
+Username VARCHAR(30) NOT NULL UNIQUE,
+Password VARCHAR(30) NOT NULL
+)
+<br><br>
+CREATE TABLE Payment (
+Payment_ID INTEGER NOT NULL PRIMARY KEY,
+Active_ornot VARCHAR(8) NOT NULL CHECK (Active_ornot IN('active', 'inactive')),
+Recur_month_payment REAL NOT NULL DEFAULT 5.99 CHECK(Recur_month_payment = 5.99),
+Type VARCHAR(10) NOT NULL CHECK (Type IN ('visa', 'mastercard')),
+CC_no INTEGER NOT NULL,
+CC_expr	VARCHAR(10) NOT NULL,
+CC_scode INTEGER NOT NULL,
+Account_ID INTEGER NOT NULL,
+FOREIGN KEY(Account_ID) REFERENCES Account(Account_ID)
+)
+<br><br>
+CREATE TABLE Location (
+LocName VARCHAR(50) NOT NULL PRIMARY KEY,
+Description VARCHAR(100) NOT NULL,
+Weather VARCHAR(50) NOT NULL
+)
+<br><br>
+CREATE TABLE Guild (
+Guild_ID INTEGER NOT NULL PRIMARY KEY,
+Guild_Name VARCHAR(50) NOT NULL,
+Description VARCHAR(100) NOT NULL
+)
+<br><br>
+CREATE TABLE Weapon (
+Weapon_ID INTEGER NOT NULL PRIMARY KEY,
+Weapon_name VARCHAR(50) NOT NULL,
+Type VARCHAR(20) NOT NULL CHECK (Type IN('sword', 'staff', 'wand', 'axe', 'dagger')),
+Weapon_damage INTEGER
+)
+<br><br>
+CREATE TABLE Achievement (
+Ach_ID INTEGER NOT NULL PRIMARY KEY,
+AchName VARCHAR(50) NOT NULL,
+Description VARCHAR(50) NOT NULL
+)
+<br><br>
+CREATE TABLE Quest (
+Quest_ID INTEGER NOT NULL PRIMARY KEY,
+QName VARCHAR(100) NOT NULL,
+Diff_level INTEGER NOT NULL CHECK(Diff_level BETWEEN 1 AND 100),
+Description VARCHAR(100) NOT NULL,
+Exp_completion INTEGER NOT NULL
+)
+<br><br>
+CREATE TABLE Character (
+CharName TEXT NOT NULL PRIMARY KEY,
+Race VARCHAR (10) NOT NULL CHECK (Race IN ('human', 'zombie', 'reptilian')),
+Class VARCHAR (10) NOT NULL CHECK (Class IN ('warlock', 'assassin', 'mercenary')),
+Level INTEGER NOT NULL DEFAULT 1 CHECK(Level BETWEEN 1 AND 100),
+Exp_pts INTEGER NOT NULL DEFAULT 0 CHECK(Exp_pts BETWEEN 0 AND 100000),
+Account_ID INTEGER NOT NULL,
+LocName VARCHAR (50) NOT NULL,
+Guild_ID INTEGER,
+Weapon_ID INTEGER,
+Ach_ID INTEGER,
+Quest_ID INTEGER,
+FOREIGN KEY(Ach_ID) REFERENCES Achievement(Ach_ID),
+FOREIGN KEY(LocName) REFERENCES Location(LocName),
+FOREIGN KEY(Account_ID) REFERENCES Account(Account_ID),
+FOREIGN KEY(Guild_ID) REFERENCES Guild(Guild_ID),
+FOREIGN KEY(Weapon_ID) REFERENCES Weapon(Weapon_ID),
+FOREIGN KEY(Quest_ID) REFERENCES Quest(Quest_ID)
+)
+<br><br>
+CREATE INDEX Character_Names
+ON Character (CharName)
+<br><br>
+CREATE VIEW Weapon_Names AS
+SELECT Weapon_name
+FROM Weapon
+<br><br>
+CREATE VIEW Location_Names AS
+SELECT LocName
+FROM Location</pre>
+<br><br>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<h2><u><b>Table Descriptions</b></u></h2><br>
+<h3><b>Account Table</b></h3><br>
+CREATE TABLE Account (<br>
+Account_ID INTEGER NOT NULL PRIMARY KEY,<br>
+Fname VARCHAR(30) NOT NULL,<br>
+Lname VARCHAR(30) NOT NULL,<br>
+Phone VARCHAR(15) NOT NULL,<br>
+Address VARCHAR(50) NOT NULL,<br>
+State VARCHAR(2) NOT NULL,<br>
+Zip INTEGER NOT NULL,<br>
+Username VARCHAR(30) NOT NULL UNIQUE,<br>
+Password VARCHAR(30) NOT NULL<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Account entity maintains general data on users and their<br>
+corresponding accounts. It may be accessed by game developers, billing,<br>
+customer service, etc.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Account_ID - This is the main key identifying an account.</li>
+<li>Fname - A user's first name.</li>
+<li>Lname - A user's last name.</li>
+<li>Phone - A user's phone number.</li>
+<li>Address - A user's address.</li>
+<li>State - A user's state abbreviation.</li>
+<li>Zip - A user's zip code.</li>
+<li>Username - A user's account username (must be unique).</li>
+<li>Password - A user's account password.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Payment Table</b></h3><br>
+CREATE TABLE Payment (<br>
+Payment_ID INTEGER NOT NULL PRIMARY KEY,<br>
+Active_ornot VARCHAR(8) NOT NULL CHECK (Active_ornot IN('active', 'inactive')),<br>
+Recur_month_payment	REAL NOT NULL DEFAULT 5.99 CHECK(Recur_month_payment = 5.99),<br>
+Type VARCHAR(10) NOT NULL CHECK (Type IN ('visa', 'mastercard')),<br>
+CC_no INTEGER NOT NULL,<br>
+CC_expr	VARCHAR(10) NOT NULL,<br>
+CC_scode INTEGER NOT NULL,<br>
+Account_ID INTEGER NOT NULL,<br>
+FOREIGN KEY(Account_ID) REFERENCES Account(Account_ID)<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Payment entity maintains data on subscription payments. It may<br>
+be accessed by billing, accounting, customer service, etc.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Payment_ID - This is the main key identifying a payment.</li>
+<li>Active_ornot - Indicates whether a payment source is 'active' or 'inactive'.</li>
+<li>Recur_month_payment - Records payment amount, which is always the monthly fee of $5.99.</li>
+<li>Type - Records type of credit card used, 'visa' or 'mastercard'.</li>
+<li>CC_no - Credit card number.</li>
+<li>CC_expr	- Credit card expiration.</li>
+<li>CC_scode - Credit card security code.</li>
+<li>Account_ID - A foreign key linking payments to their corresponding accounts.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Location Table</b></h3><br>
+CREATE TABLE Location (<br>
+LocName VARCHAR(50) NOT NULL PRIMARY KEY,<br>
+Description VARCHAR(100) NOT NULL,<br>
+Weather VARCHAR(50) NOT NULL<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Location entity records a character's current location.<br>
+This may be accessed by game developers.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>LocName - This is the main key identifying a location. It is the name of the location.</li>
+<li>Description - Description of a game location.</li>
+<li>Weather - Weather effects present in a location.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Guild Table</b></h3><br>
+CREATE TABLE Guild (<br>
+Guild_ID INTEGER NOT NULL PRIMARY KEY,<br>
+Guild_Name VARCHAR(50) NOT NULL,<br>
+Description VARCHAR(100) NOT NULL<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Guild entity maintains data on in-game guilds.<br>
+This may be accessed by game developers.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Guild_ID - This is the main key identifying a guild.</li>
+<li>Guild_Name - The name of a guild.</li>
+<li>Description - Guild description.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Weapon Table</b></h3><br>
+CREATE TABLE Weapon (<br>
+Weapon_ID INTEGER NOT NULL PRIMARY KEY,<br>
+Weapon_name VARCHAR(50) NOT NULL,<br>
+Type VARCHAR(20) NOT NULL CHECK (Type IN('sword', 'staff', 'wand', 'axe', 'dagger')),<br>
+Weapon_damage INTEGER<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Weapon entity maintains data on all weapons available in the game.<br>
+This may be accessed by game developers.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Weapon_ID - This is the main key identifying a weapon.</li>
+<li>Weapon_name - The name of a weapon.</li>
+<li>Type - Type of weapon. Must be a 'sword', 'staff', 'wand', 'axe', or 'dagger'.</li>
+<li>Weapon_damage - Amount of damage points per hit of a weapon. Can be NULL.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Achievement Table</b></h3><br>
+CREATE TABLE Achievement (<br>
+Ach_ID INTEGER NOT NULL PRIMARY KEY,<br>
+AchName	VARCHAR(50) NOT NULL,<br>
+Description	VARCHAR(50) NOT NULL<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Achievement entity maintains data on all game achievements.<br>
+This may be accessed by game developers.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Ach_ID - The main key identifying an achievement.</li>
+<li>AchName	- Name of an achievement.</li>
+<li>Description - Description of achievement.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Quest Table</b></h3><br>
+CREATE TABLE Quest (<br>
+Quest_ID INTEGER NOT NULL PRIMARY KEY,<br>
+QName VARCHAR(100) NOT NULL,<br>
+Diff_level INTEGER NOT NULL CHECK(Diff_level BETWEEN 1 AND 100),<br>
+Description	VARCHAR(100) NOT NULL,<br>
+Exp_completion INTEGER NOT NULL<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Quest entity maintains data on all game quests.<br>
+This may be accessed by game developers and quest writers.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>Quest_ID - The main key identifying a quest.</li>
+<li>QName - The name of a quest.</li>
+<li>Diff_level - Difficulty level of a quest. Must be between 1 and 100.</li>
+<li>Description	- Description of a quest.</li>
+<li>Exp_completion - Amount of experience points gained on completion of a quest.</li>
+</ul>
+<br>
+<hr>
+<h3><b>Character Table</b></h3><br>
+CREATE TABLE Character (<br>
+CharName TEXT NOT NULL PRIMARY KEY,<br>
+Race VARCHAR (10) NOT NULL CHECK (Race IN ('human', 'zombie', 'reptilian')),<br>
+Class VARCHAR (10) NOT NULL CHECK (Class IN ('warlock', 'assassin', 'mercenary')),<br>
+Level INTEGER NOT NULL DEFAULT 1 CHECK(Level BETWEEN 1 AND 100),<br>
+Exp_pts INTEGER NOT NULL DEFAULT 0 CHECK(Exp_pts BETWEEN 0 AND 100000),<br>
+Account_ID INTEGER NOT NULL,<br>
+LocName VARCHAR (50) NOT NULL,<br>
+Guild_ID INTEGER,<br>
+Weapon_ID INTEGER,<br>
+Ach_ID INTEGER,<br>
+Quest_ID INTEGER,<br>
+FOREIGN KEY(Ach_ID) REFERENCES Achievement(Ach_ID),<br>
+FOREIGN KEY(LocName) REFERENCES Location(LocName),<br>
+FOREIGN KEY(Account_ID) REFERENCES Account(Account_ID),<br>
+FOREIGN KEY(Guild_ID) REFERENCES Guild(Guild_ID),<br>
+FOREIGN KEY(Weapon_ID) REFERENCES Weapon(Weapon_ID),<br>
+FOREIGN KEY(Quest_ID) REFERENCES Quest(Quest_ID)<br>
+);<br>
+<br>
+<br>
+<i>Entity</i>: The Character entity maintains data on all user characters.<br>
+This may be accessed by game developers, customer service, etc.<br>
+<br>
+<i>Attributes</i>:<ul>
+<li>CharName - The main key identifying a character. It's the name of a character.</li>
+<li>Race - A character's race. Must be a human, zombie, or reptilian.</li>
+<li>Class - A character's class. Must be a warlock, assassin, or mercenary.</li>
+<li>Level - A character's level. Must be between 1 and 100.</li>
+<li>Exp_pts - A character's current experience points, must be between 0 and 100,000.</li>
+<li>Account_ID, LocName, Guild_ID, Weapon_ID, Ach_ID, and Quest_ID - foreign keys.</li>
+</ul>
+<br>
+</body>
+</html>
